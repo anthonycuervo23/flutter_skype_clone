@@ -20,6 +20,7 @@ dependencies:
   firebase_auth: ^3.0.1
   google_sign_in: ^5.0.7
   permission_handler: ^8.1.4+2
+  new_gradient_app_bar: ^0.2.0
   shimmer: ^2.0.0
 
 

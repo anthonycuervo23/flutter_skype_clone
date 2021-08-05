@@ -36,7 +36,9 @@ class _ChatListPageState extends State<ChatListPage> {
         title: UserCircle(text: initials),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/search_screen');
+            },
             icon: const Icon(
               Icons.search,
               color: Colors.white,
@@ -147,52 +149,50 @@ class ChatListContainer extends StatefulWidget {
 class _ChatListContainerState extends State<ChatListContainer> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-          padding: const EdgeInsets.all(10.0),
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            return CustomTile(
-              mini: false,
-              onTap: () {},
-              title: const Text(
-                'Jean Cuervo',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Arial',
-                  fontSize: 19,
-                ),
+    return ListView.builder(
+        padding: const EdgeInsets.all(10.0),
+        itemCount: 2,
+        itemBuilder: (BuildContext context, int index) {
+          return CustomTile(
+            mini: false,
+            onTap: () {},
+            title: const Text(
+              'Jean Cuervo',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Arial',
+                fontSize: 19,
               ),
-              subtitle: const Text(
-                'Hello',
-                style: TextStyle(color: greyColor, fontSize: 14),
-              ),
-              leading: Container(
-                constraints: const BoxConstraints(maxHeight: 60, maxWidth: 60),
-                child: Stack(
-                  children: <Widget>[
-                    const CircleAvatar(
-                      maxRadius: 30,
-                      backgroundColor: Colors.grey,
-                      backgroundImage: NetworkImage(
-                          'https://yt3.ggpht.com/a/AGF-l7_zT8BuWwHTymaQaBptCy7WrsOD72gYGp-puw=s900-c-k-c0xffffffff-no-rj-mo'),
+            ),
+            subtitle: const Text(
+              'Hello',
+              style: TextStyle(color: greyColor, fontSize: 14),
+            ),
+            leading: Container(
+              constraints: const BoxConstraints(maxHeight: 60, maxWidth: 60),
+              child: Stack(
+                children: <Widget>[
+                  const CircleAvatar(
+                    maxRadius: 30,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(
+                        'https://yt3.ggpht.com/a/AGF-l7_zT8BuWwHTymaQaBptCy7WrsOD72gYGp-puw=s900-c-k-c0xffffffff-no-rj-mo'),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      height: 13,
+                      width: 13,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: onlineDotColor,
+                          border: Border.all(color: blackColor, width: 2.0)),
                     ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        height: 13,
-                        width: 13,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: onlineDotColor,
-                            border: Border.all(color: blackColor, width: 2.0)),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/screens/home_screen.dart';
 import 'package:skype_clone/presentation/screens/login_screen.dart';
+import 'package:skype_clone/presentation/screens/search_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: <String, Widget Function(BuildContext)>{
+        '/search_screen': (_) => const SearchScreen(),
+      },
       home: FutureBuilder<User>(
           future: _repository.getCurrentUser(),
           builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
