@@ -34,32 +34,32 @@ class CustomTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: mini ? 10 : 0),
         margin: margin,
         child: Row(
-          children: [
+          children: <Widget>[
             leading,
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(left: mini ? 10 : 15),
                 padding: EdgeInsets.symmetric(vertical: mini ? 3 : 20),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       width: 1,
-                      color: Variables.separatorColor,
+                      color: separatorColor,
                     ),
                   ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         title,
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
-                          children: [
+                          children: <Widget>[
                             icon ?? Container(),
                             subtitle,
                           ],

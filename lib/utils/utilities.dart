@@ -4,9 +4,9 @@ class Utils {
   }
 
   static String getInitials(String name) {
-    List<String> nameSplit = name.split(' ');
-    String firstNameInitial = nameSplit[0][0];
-    String lastNameInitial = nameSplit[1][0];
+    final List<String> nameSplit = name.split(' ');
+    final String firstNameInitial = nameSplit[0][0];
+    final String lastNameInitial = nameSplit[1][0];
     return firstNameInitial + lastNameInitial;
   }
 }

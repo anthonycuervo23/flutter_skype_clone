@@ -1,12 +1,4 @@
 class UserModel {
-  String? uid;
-  String? name;
-  String? email;
-  String? username;
-  String? status;
-  int? state;
-  String? profilePhoto;
-
   UserModel({
     this.uid,
     this.name,
@@ -17,25 +9,33 @@ class UserModel {
     this.profilePhoto,
   });
 
+  UserModel.fromMap(Map<String, dynamic> mapData) {
+    uid = mapData['uid'] as String;
+    name = mapData['name'] as String;
+    email = mapData['email'] as String;
+    username = mapData['username'] as String;
+    status = mapData['status'] as String;
+    state = mapData['state'] as int;
+    profilePhoto = mapData['profile_photo'] as String;
+  }
+
   Map<String, dynamic> toMap(UserModel user) {
-    var data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['uid'] = user.uid;
     data['name'] = user.name;
     data['email'] = user.email;
     data['username'] = user.username;
-    data["status"] = user.status;
-    data["state"] = user.state;
-    data["profile_photo"] = user.profilePhoto;
+    data['status'] = user.status;
+    data['state'] = user.state;
+    data['profile_photo'] = user.profilePhoto;
     return data;
   }
 
-  UserModel.fromMap(Map<String, dynamic> mapData) {
-    this.uid = mapData['uid'];
-    this.name = mapData['name'];
-    this.email = mapData['email'];
-    this.username = mapData['username'];
-    this.status = mapData['status'];
-    this.state = mapData['state'];
-    this.profilePhoto = mapData['profile_photo'];
-  }
+  String? uid;
+  String? name;
+  String? email;
+  String? username;
+  String? status;
+  int? state;
+  String? profilePhoto;
 }

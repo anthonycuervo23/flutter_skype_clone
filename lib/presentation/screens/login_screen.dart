@@ -14,26 +14,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  FirebaseRepository _repository = FirebaseRepository();
+  final FirebaseRepository _repository = FirebaseRepository();
 
   bool isLoginPressed = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Variables.blackColor,
+        backgroundColor: blackColor,
         body: Stack(
-          children: [
+          children: <Widget>[
             Center(
               child: loginButton(),
             ),
-            isLoginPressed
-                ? Center(
-                    child: CupertinoActivityIndicator(
-                      animating: true,
-                    ),
-                  )
-                : Container()
+            if (isLoginPressed)
+              const Center(
+                child: CupertinoActivityIndicator(
+                  animating: true,
+                ),
+              )
+            else
+              Container()
           ],
         ));
   }
@@ -41,11 +42,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget loginButton() {
     return Shimmer.fromColors(
       baseColor: Colors.white,
-      highlightColor: Variables.senderColor,
+      highlightColor: senderColor,
       child: MaterialButton(
-        padding: EdgeInsets.all(35.0),
+        padding: const EdgeInsets.all(35.0),
         onPressed: () => performLogin(),
-        child: Text(
+        child: const Text(
           'Login',
           style: TextStyle(
               fontSize: 35, fontWeight: FontWeight.w900, letterSpacing: 1.2),
@@ -71,18 +72,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void authenticateUser(User user) {
-    _repository.authenticateUser(user).then((isNewUser) {
+    _repository.authenticateUser(user).then((bool isNewUser) {
       setState(() {
         isLoginPressed = false;
       });
       if (isNewUser) {
-        _repository.addDataToDb(user).then((value) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => HomeScreen()));
+        _repository.addDataToDb(user).then((void value) {
+          Navigator.pushReplacement<dynamic, dynamic>(context,
+              MaterialPageRoute<dynamic>(builder: (_) => const HomeScreen()));
         });
       } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => HomeScreen()));
+        Navigator.pushReplacement<dynamic, dynamic>(context,
+            MaterialPageRoute<dynamic>(builder: (_) => const HomeScreen()));
       }
     });
   }

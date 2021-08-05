@@ -32,21 +32,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _labelFontSize = 10.0;
+    const double _labelFontSize = 10.0;
     return Scaffold(
-      backgroundColor: Variables.blackColor,
+      backgroundColor: blackColor,
       body: PageView(
-        children: [
+        children: <Widget>[
           Container(
-            child: ChatListPage(),
+            child: const ChatListPage(),
           ),
-          Center(
+          const Center(
             child: Text(
               'Call Logs',
               style: TextStyle(color: Colors.white),
             ),
           ),
-          Center(
+          const Center(
             child: Text(
               'Contact Screen',
               style: TextStyle(color: Colors.white),
@@ -55,60 +55,48 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         controller: _pageController,
         onPageChanged: onPageChanged,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: Container(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: CupertinoTabBar(
-            backgroundColor: Variables.blackColor,
+            backgroundColor: blackColor,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.chat,
-                  color: _page == 0
-                      ? Variables.lightBlueColor
-                      : Variables.greyColor,
+                  color: _page == 0 ? lightBlueColor : greyColor,
                 ),
                 title: Text(
                   'Chats',
                   style: TextStyle(
                       fontSize: _labelFontSize,
-                      color: _page == 0
-                          ? Variables.lightBlueColor
-                          : Variables.greyColor),
+                      color: _page == 0 ? lightBlueColor : greyColor),
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.call,
-                  color: _page == 1
-                      ? Variables.lightBlueColor
-                      : Variables.greyColor,
+                  color: _page == 1 ? lightBlueColor : greyColor,
                 ),
                 title: Text(
                   'Calls',
                   style: TextStyle(
                       fontSize: _labelFontSize,
-                      color: _page == 1
-                          ? Variables.lightBlueColor
-                          : Variables.greyColor),
+                      color: _page == 1 ? lightBlueColor : greyColor),
                 ),
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.contact_phone,
-                  color: _page == 2
-                      ? Variables.lightBlueColor
-                      : Variables.greyColor,
+                  color: _page == 2 ? lightBlueColor : greyColor,
                 ),
                 title: Text(
                   'Contacts',
                   style: TextStyle(
                       fontSize: _labelFontSize,
-                      color: _page == 2
-                          ? Variables.lightBlueColor
-                          : Variables.greyColor),
+                      color: _page == 2 ? lightBlueColor : greyColor),
                 ),
               ),
             ],

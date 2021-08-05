@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/widgets/appbar.dart';
@@ -21,7 +22,7 @@ class _ChatListPageState extends State<ChatListPage> {
 
   @override
   void initState() {
-    _repository.getCurrentUser().then((user) {
+    _repository.getCurrentUser().then((User user) {
       setState(() {
         currentUserId = user.uid;
         initials = Utils.getInitials(user.displayName!);
@@ -33,17 +34,17 @@ class _ChatListPageState extends State<ChatListPage> {
   CustomAppBar customAppBar(BuildContext context) {
     return CustomAppBar(
         title: UserCircle(text: initials),
-        actions: [
+        actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               color: Colors.white,
             ),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
               color: Colors.white,
             ),
@@ -51,7 +52,7 @@ class _ChatListPageState extends State<ChatListPage> {
         ],
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(
+          icon: const Icon(
             Icons.notifications,
             color: Colors.white,
           ),
@@ -62,9 +63,9 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Variables.blackColor,
+      backgroundColor: blackColor,
       appBar: customAppBar(context),
-      floatingActionButton: NewChatButton(),
+      floatingActionButton: const NewChatButton(),
       body: ChatListContainer(currentUserId: currentUserId),
     );
   }
@@ -81,17 +82,16 @@ class UserCircle extends StatelessWidget {
       height: 40,
       width: 40,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50.0),
-          color: Variables.separatorColor),
+          borderRadius: BorderRadius.circular(50.0), color: separatorColor),
       child: Stack(
-        children: [
+        children: <Widget>[
           Align(
             alignment: Alignment.center,
             child: Text(
               text!,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Variables.lightBlueColor,
+                  color: lightBlueColor,
                   fontSize: 13),
             ),
           ),
@@ -103,10 +103,10 @@ class UserCircle extends StatelessWidget {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Variables.blackColor,
+                    color: blackColor,
                     width: 2,
                   ),
-                  color: Variables.onlineDotColor),
+                  color: onlineDotColor),
             ),
           )
         ],
@@ -122,15 +122,15 @@ class NewChatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: Variables.fabGradient,
+        gradient: fabGradient,
         borderRadius: BorderRadius.circular(50.0),
       ),
-      child: Icon(
+      child: const Icon(
         Icons.edit,
         color: Colors.white,
         size: 25,
       ),
-      padding: EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
     );
   }
 }
@@ -149,13 +149,13 @@ class _ChatListContainerState extends State<ChatListContainer> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           itemCount: 2,
           itemBuilder: (BuildContext context, int index) {
             return CustomTile(
               mini: false,
               onTap: () {},
-              title: Text(
+              title: const Text(
                 'Jean Cuervo',
                 style: TextStyle(
                   color: Colors.white,
@@ -163,15 +163,15 @@ class _ChatListContainerState extends State<ChatListContainer> {
                   fontSize: 19,
                 ),
               ),
-              subtitle: Text(
+              subtitle: const Text(
                 'Hello',
-                style: TextStyle(color: Variables.greyColor, fontSize: 14),
+                style: TextStyle(color: greyColor, fontSize: 14),
               ),
               leading: Container(
-                constraints: BoxConstraints(maxHeight: 60, maxWidth: 60),
+                constraints: const BoxConstraints(maxHeight: 60, maxWidth: 60),
                 child: Stack(
-                  children: [
-                    CircleAvatar(
+                  children: <Widget>[
+                    const CircleAvatar(
                       maxRadius: 30,
                       backgroundColor: Colors.grey,
                       backgroundImage: NetworkImage(
@@ -184,9 +184,8 @@ class _ChatListContainerState extends State<ChatListContainer> {
                         width: 13,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Variables.onlineDotColor,
-                            border: Border.all(
-                                color: Variables.blackColor, width: 2.0)),
+                            color: onlineDotColor,
+                            border: Border.all(color: blackColor, width: 2.0)),
                       ),
                     ),
                   ],

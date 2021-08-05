@@ -6,7 +6,7 @@ import 'package:skype_clone/utils/utilities.dart';
 
 class FirebaseMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   UserModel userModel = UserModel();
@@ -18,32 +18,32 @@ class FirebaseMethods {
   }
 
   Future<UserCredential> signIn() async {
-    GoogleSignInAccount? _signInAccount = await _googleSignIn.signIn();
-    GoogleSignInAuthentication _signInAuth =
+    final GoogleSignInAccount? _signInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication _signInAuth =
         await _signInAccount!.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: _signInAuth.accessToken, idToken: _signInAuth.idToken);
 
-    UserCredential user = await _auth.signInWithCredential(credential);
+    final UserCredential user = await _auth.signInWithCredential(credential);
 
     return user;
   }
 
   Future<bool> authenticateUser(User user) async {
-    QuerySnapshot result = await firestore
+    final QuerySnapshot<Object?> result = await firestore
         .collection('users')
         .where('email', isEqualTo: user.email)
         .get();
 
-    final List<DocumentSnapshot> docs = result.docs;
+    final List<DocumentSnapshot<Object?>> docs = result.docs;
 
     //if user is registered then length of list > 0 else length = 0
-    return docs.length == 0 ? true : false;
+    return docs.isEmpty || false;
   }
 
   Future<void> addDataToDb(User currentUser) async {
-    String username = Utils.getUserName(currentUser.email!);
+    final String username = Utils.getUserName(currentUser.email!);
 
     userModel = UserModel(
       uid: currentUser.uid,
@@ -62,6 +62,6 @@ class FirebaseMethods {
   Future<void> signOut() async {
     await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
-    return await _auth.signOut();
+    return _auth.signOut();
   }
 }
