@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
       routes: <String, Widget Function(BuildContext)>{
         '/search_screen': (_) => const SearchScreen(),
       },
+      theme: ThemeData(brightness: Brightness.dark),
       home: FutureBuilder<User>(
           future: _repository.getCurrentUser(),
           builder: (BuildContext context, AsyncSnapshot<User> snapshot) {

@@ -14,8 +14,8 @@ class UserModel {
     name = mapData['name'] as String;
     email = mapData['email'] as String;
     username = mapData['username'] as String;
-    status = mapData['status'] as String;
-    state = mapData['state'] as int;
+    status = mapData['status'];
+    state = mapData['state'];
     profilePhoto = mapData['profile_photo'] as String;
   }
 
@@ -35,7 +35,7 @@ class UserModel {
   String? name;
   String? email;
   String? username;
-  String? status;
-  int? state;
+  dynamic status;
+  dynamic state;
   String? profilePhoto;
 }

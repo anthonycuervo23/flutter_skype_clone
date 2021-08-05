@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:skype_clone/data/models/user.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/presentation/chatscreens/chat_screen.dart';
 import 'package:skype_clone/presentation/widgets/custom_tile.dart';
 import 'package:skype_clone/utils/variables.dart';
 
@@ -16,7 +17,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final FirebaseRepository _repository = FirebaseRepository();
 
-  List<UserModel>? userList;
+  List<UserModel> userList = <UserModel>[];
   String query = '';
   TextEditingController searchController = TextEditingController();
 
@@ -84,7 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget buildSuggestions(String query) {
     final List<UserModel> suggestionList = query.isEmpty
         ? <UserModel>[]
-        : userList!.where((UserModel user) {
+        : userList.where((UserModel user) {
             final String _getUsername = user.username!.toLowerCase();
             final String _query = query.toLowerCase();
             final String _getName = user.name!.toLowerCase();
@@ -108,7 +109,12 @@ class _SearchScreenState extends State<SearchScreen> {
           );
           return CustomTile(
             mini: false,
-            onTap: () {},
+            onTap: () {
+              Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                      builder: (_) => ChatScreen(receiver: searchedUser)));
+            },
             leading: CircleAvatar(
               backgroundImage: NetworkImage(searchedUser.profilePhoto!),
               backgroundColor: Colors.grey,
