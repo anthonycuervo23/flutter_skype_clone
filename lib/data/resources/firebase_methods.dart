@@ -1,17 +1,22 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 //My imports
 import 'package:skype_clone/data/constants/data_constants.dart';
 import 'package:skype_clone/data/models/user.dart';
 import 'package:skype_clone/data/models/message.dart';
+import 'package:skype_clone/data/provider/image_upload_provider.dart';
 import 'package:skype_clone/data/utils/utilities.dart';
 
 class FirebaseMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static final FirebaseStorage storage = FirebaseStorage.instance;
 
   UserModel userModel = UserModel();
 
@@ -98,5 +103,67 @@ class FirebaseMethods {
         .doc(message.receiverId)
         .collection(message.senderId!)
         .add(map);
+  }
+
+  Future<String> uploadImageToStorage(File image) async {
+    try {
+      final Reference _ref =
+          storage.ref().child('${DateTime.now().millisecondsSinceEpoch}');
+
+      final UploadTask _uploadTask = _ref.putFile(image);
+
+      await _uploadTask;
+      return _ref.getDownloadURL();
+    } catch (e) {
+      print(e);
+      return '';
+    }
+  }
+
+  Future<void> setImageMsg(
+      String url, String receiverId, String senderId) async {
+    MessageModel _message;
+
+    _message = MessageModel.imageMessage(
+      message: 'IMAGE',
+      receiverId: receiverId,
+      senderId: senderId,
+      photoUrl: url,
+      timestamp: Timestamp.now(),
+      type: 'image',
+    );
+
+    final Map<String, dynamic> map = _message.toImageMap();
+
+    // Set the data to database
+    await firestore
+        .collection(AppDBConstants.messagesCollection)
+        .doc(_message.senderId)
+        .collection(_message.receiverId!)
+        .add(map);
+
+    await firestore
+        .collection(AppDBConstants.messagesCollection)
+        .doc(_message.receiverId)
+        .collection(_message.senderId!)
+        .add(map);
+  }
+
+  Future<void> uploadImage(
+    File image,
+    String receiverId,
+    String senderId,
+    ImageUploadProvider imageUploadProvider,
+  ) async {
+    //Show loading
+    imageUploadProvider.setToLoading();
+
+    //Get url from the image bucket
+    final String url = await uploadImageToStorage(image);
+
+    //Hide loading
+    imageUploadProvider.setToIdle();
+
+    setImageMsg(url, receiverId, senderId);
   }
 }

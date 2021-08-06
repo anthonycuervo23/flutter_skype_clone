@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 //My imports
+import 'package:skype_clone/data/provider/image_upload_provider.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/screens/home_screen.dart';
 import 'package:skype_clone/presentation/screens/login_screen.dart';
@@ -24,22 +26,25 @@ class _MyAppState extends State<MyApp> {
   final FirebaseRepository _repository = FirebaseRepository();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: <String, Widget Function(BuildContext)>{
-        '/search_screen': (_) => const SearchScreen(),
-      },
-      theme: ThemeData(brightness: Brightness.dark),
-      home: FutureBuilder<User>(
-          future: _repository.getCurrentUser(),
-          builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-            if (snapshot.hasData) {
-              return const HomeScreen();
-            } else {
-              return const LoginScreen();
-            }
-          }),
+    return ChangeNotifierProvider<ImageUploadProvider>(
+      create: (_) => ImageUploadProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: <String, Widget Function(BuildContext)>{
+          '/search_screen': (_) => const SearchScreen(),
+        },
+        theme: ThemeData(brightness: Brightness.dark),
+        home: FutureBuilder<User>(
+            future: _repository.getCurrentUser(),
+            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+              if (snapshot.hasData) {
+                return const HomeScreen();
+              } else {
+                return const LoginScreen();
+              }
+            }),
+      ),
     );
   }
 }

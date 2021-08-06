@@ -31,12 +31,24 @@ class MessageModel {
     return map;
   }
 
+  Map<String, dynamic> toImageMap() {
+    final Map<String, dynamic> map = <String, dynamic>{};
+    map[MessageFields.senderId] = senderId;
+    map[MessageFields.receiverId] = receiverId;
+    map[MessageFields.type] = type;
+    map[MessageFields.message] = message;
+    map[MessageFields.timestamp] = timestamp;
+    map[MessageFields.photoUrl] = photoUrl;
+    return map;
+  }
+
   MessageModel.fromMap(Map<String, dynamic> map) {
     senderId = map[MessageFields.senderId];
     receiverId = map[MessageFields.receiverId];
     type = map[MessageFields.type];
     message = map[MessageFields.message];
     timestamp = map[MessageFields.timestamp];
+    photoUrl = map[MessageFields.photoUrl];
   }
 
   String? senderId;
