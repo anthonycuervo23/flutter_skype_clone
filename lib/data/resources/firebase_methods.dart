@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+//My imports
+import 'package:skype_clone/data/constants/data_constants.dart';
 import 'package:skype_clone/data/models/user.dart';
-import 'package:skype_clone/utils/utilities.dart';
+import 'package:skype_clone/data/models/message.dart';
+import 'package:skype_clone/data/utils/utilities.dart';
 
 class FirebaseMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,8 +36,8 @@ class FirebaseMethods {
 
   Future<bool> authenticateUser(User user) async {
     final QuerySnapshot<Object?> result = await firestore
-        .collection('users')
-        .where('email', isEqualTo: user.email)
+        .collection(AppDBConstants.usersCollection)
+        .where(AppDBConstants.emailField, isEqualTo: user.email)
         .get();
 
     final List<DocumentSnapshot<Object?>> docs = result.docs;
@@ -54,7 +58,7 @@ class FirebaseMethods {
     );
 
     firestore
-        .collection('users')
+        .collection(AppDBConstants.usersCollection)
         .doc(currentUser.uid)
         .set(userModel.toMap(userModel));
   }
@@ -69,7 +73,7 @@ class FirebaseMethods {
     final List<UserModel> userList = <UserModel>[];
 
     final QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await firestore.collection('users').get();
+        await firestore.collection(AppDBConstants.usersCollection).get();
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       if (querySnapshot.docs[i].id != currentUser.uid) {
@@ -77,5 +81,22 @@ class FirebaseMethods {
       }
     }
     return userList;
+  }
+
+  Future<DocumentReference<Map<String, dynamic>>> addMessageToDb(
+      MessageModel message, UserModel sender, UserModel receiver) async {
+    final Map<String, dynamic> map = message.toMap();
+
+    await firestore
+        .collection(AppDBConstants.messagesCollection)
+        .doc(message.senderId)
+        .collection(message.receiverId!)
+        .add(map);
+
+    return firestore
+        .collection(AppDBConstants.messagesCollection)
+        .doc(message.receiverId)
+        .collection(message.senderId!)
+        .add(map);
   }
 }

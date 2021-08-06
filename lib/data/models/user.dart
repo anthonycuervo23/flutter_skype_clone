@@ -1,3 +1,6 @@
+//My imports
+import 'package:skype_clone/data/constants/user_fields.dart';
+
 class UserModel {
   UserModel({
     this.uid,
@@ -10,24 +13,24 @@ class UserModel {
   });
 
   UserModel.fromMap(Map<String, dynamic> mapData) {
-    uid = mapData['uid'] as String;
-    name = mapData['name'] as String;
-    email = mapData['email'] as String;
-    username = mapData['username'] as String;
-    status = mapData['status'];
-    state = mapData['state'];
-    profilePhoto = mapData['profile_photo'] as String;
+    uid = mapData[UserFields.uid];
+    name = mapData[UserFields.name];
+    email = mapData[UserFields.email];
+    username = mapData[UserFields.username];
+    status = mapData[UserFields.status];
+    state = mapData[UserFields.state];
+    profilePhoto = mapData[UserFields.profilePhoto];
   }
 
   Map<String, dynamic> toMap(UserModel user) {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['uid'] = user.uid;
-    data['name'] = user.name;
-    data['email'] = user.email;
-    data['username'] = user.username;
-    data['status'] = user.status;
-    data['state'] = user.state;
-    data['profile_photo'] = user.profilePhoto;
+    data[UserFields.uid] = user.uid;
+    data[UserFields.name] = user.name;
+    data[UserFields.email] = user.email;
+    data[UserFields.username] = user.username;
+    data[UserFields.status] = user.status;
+    data[UserFields.state] = user.state;
+    data[UserFields.profilePhoto] = user.profilePhoto;
     return data;
   }
 
@@ -35,7 +38,7 @@ class UserModel {
   String? name;
   String? email;
   String? username;
-  dynamic status;
-  dynamic state;
+  String? status;
+  int? state;
   String? profilePhoto;
 }

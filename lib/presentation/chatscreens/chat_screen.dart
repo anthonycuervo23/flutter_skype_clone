@@ -1,11 +1,16 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+//My imports
+import 'package:skype_clone/data/constants/data_constants.dart';
 import 'package:skype_clone/data/models/user.dart';
+import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/widgets/appbar.dart';
 import 'package:skype_clone/presentation/widgets/custom_tile.dart';
-import 'package:skype_clone/utils/variables.dart';
+import 'package:skype_clone/data/constants/colors.dart';
+import 'package:skype_clone/data/models/message.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key, this.receiver}) : super(key: key);
@@ -18,12 +23,34 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
+  final FirebaseRepository _repository = FirebaseRepository();
+
+  UserModel? sender;
+
+  String? _currentUserId;
 
   bool isWriting = false;
+
+  @override
+  void initState() {
+    _repository.getCurrentUser().then((User user) {
+      _currentUserId = user.uid;
+
+      setState(() {
+        sender = UserModel(
+          uid: user.uid,
+          name: user.displayName,
+          profilePhoto: user.photoURL,
+        );
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: AppColors.blackColor,
       appBar: customAppBar(context),
       body: Column(
         children: <Widget>[
@@ -35,24 +62,49 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget messageList() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(10.0),
-        itemCount: 6,
-        itemBuilder: (BuildContext context, int index) {
-          return chatMessageItem();
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance
+            .collection(AppDBConstants.messagesCollection)
+            .doc(_currentUserId)
+            .collection(widget.receiver!.uid!)
+            .orderBy(AppDBConstants.timestampField, descending: true)
+            .snapshots(),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.data == null) {
+            return const Center(
+              child: CupertinoActivityIndicator(
+                animating: true,
+              ),
+            );
+          }
+          return ListView.builder(
+            padding: const EdgeInsets.all(10.0),
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (BuildContext context, int index) {
+              return chatMessageItem(snapshot.data!.docs[index]);
+            },
+          );
         });
   }
 
-  Widget chatMessageItem() {
+  Widget chatMessageItem(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final MessageModel _message = MessageModel.fromMap(snapshot.data());
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15.0),
       child: Container(
-        child: senderLayout(),
+        alignment: _message.senderId == _currentUserId
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
+        child: _message.senderId == _currentUserId
+            ? senderLayout(_message)
+            : receiverLayout(_message),
       ),
     );
   }
 
-  Widget senderLayout() {
+  Widget senderLayout(MessageModel message) {
     const Radius messageRadius = Radius.circular(10.0);
 
     return Row(
@@ -65,26 +117,23 @@ class _ChatScreenState extends State<ChatScreen> {
             maxWidth: MediaQuery.of(context).size.width * 0.65,
           ),
           decoration: const BoxDecoration(
-            color: senderColor,
+            color: AppColors.senderColor,
             borderRadius: BorderRadius.only(
               topLeft: messageRadius,
               topRight: messageRadius,
               bottomLeft: messageRadius,
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              'Hello',
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: getMessage(message),
           ),
         ),
       ],
     );
   }
 
-  Widget receiverLayout() {
+  Widget receiverLayout(MessageModel message) {
     const Radius messageRadius = Radius.circular(10.0);
 
     return Row(
@@ -97,22 +146,29 @@ class _ChatScreenState extends State<ChatScreen> {
             maxWidth: MediaQuery.of(context).size.width * 0.65,
           ),
           decoration: const BoxDecoration(
-            color: senderColor,
+            color: AppColors.senderColor,
             borderRadius: BorderRadius.only(
               bottomRight: messageRadius,
               topRight: messageRadius,
               bottomLeft: messageRadius,
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              'Hello',
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: getMessage(message),
           ),
         ),
       ],
+    );
+  }
+
+  Widget getMessage(MessageModel message) {
+    return Text(
+      message.message!,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+      ),
     );
   }
 
@@ -127,7 +183,7 @@ class _ChatScreenState extends State<ChatScreen> {
       showModalBottomSheet<dynamic>(
         context: context,
         elevation: 0,
-        backgroundColor: blackColor,
+        backgroundColor: AppColors.blackColor,
         builder: (BuildContext context) {
           return Column(
             children: <Widget>[
@@ -206,7 +262,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Container(
               padding: const EdgeInsets.all(5.0),
               decoration: const BoxDecoration(
-                  gradient: fabGradient, shape: BoxShape.circle),
+                  gradient: AppColors.fabGradient, shape: BoxShape.circle),
               child: const Icon(Icons.add),
             ),
           ),
@@ -227,7 +283,7 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: InputDecoration(
                 hintText: 'Type a message',
                 hintStyle: const TextStyle(
-                  color: greyColor,
+                  color: AppColors.greyColor,
                 ),
                 border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -238,7 +294,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                 filled: true,
-                fillColor: separatorColor,
+                fillColor: AppColors.separatorColor,
                 suffixIcon: GestureDetector(
                   onTap: () {},
                   child: const Icon(Icons.face),
@@ -258,7 +314,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Container(
               margin: const EdgeInsets.only(left: 10.0),
               decoration: const BoxDecoration(
-                  gradient: fabGradient, shape: BoxShape.circle),
+                  gradient: AppColors.fabGradient, shape: BoxShape.circle),
               child: IconButton(
                 icon: const Icon(
                   Icons.send,
@@ -275,7 +331,23 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage() {
-    String text = _controller.text;
+    final String text = _controller.text;
+
+    final MessageModel _message = MessageModel(
+      receiverId: widget.receiver!.uid,
+      senderId: sender!.uid,
+      message: text,
+      timestamp: Timestamp.now(),
+      type: 'text',
+    );
+
+    setState(() {
+      isWriting = false;
+    });
+
+    _controller.text = '';
+
+    _repository.addMessageToDb(_message, sender!, widget.receiver!);
   }
 
   CustomAppBar customAppBar(BuildContext context) {
@@ -320,12 +392,12 @@ class ModalTile extends StatelessWidget {
           margin: const EdgeInsets.only(right: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
-            color: receiverColor,
+            color: AppColors.receiverColor,
           ),
           padding: const EdgeInsets.all(10.0),
           child: Icon(
             icon,
-            color: greyColor,
+            color: AppColors.greyColor,
             size: 38,
           ),
         ),
@@ -339,7 +411,7 @@ class ModalTile extends StatelessWidget {
         subtitle: Text(
           subtitle,
           style: const TextStyle(
-            color: greyColor,
+            color: AppColors.greyColor,
             fontSize: 14.0,
           ),
         ),

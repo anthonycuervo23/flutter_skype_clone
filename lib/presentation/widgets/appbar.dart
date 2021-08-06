@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:skype_clone/utils/variables.dart';
+
+//My imports
+import 'package:skype_clone/data/constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
@@ -20,14 +22,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: const BoxDecoration(
-        color: blackColor,
+        color: AppColors.blackColor,
         border: Border(
           bottom: BorderSide(
-              color: separatorColor, width: 1.4, style: BorderStyle.solid),
+              color: AppColors.separatorColor,
+              width: 1.4,
+              style: BorderStyle.solid),
         ),
       ),
       child: AppBar(
-        backgroundColor: blackColor,
+        backgroundColor: AppColors.blackColor,
         elevation: 0,
         leading: leading,
         actions: actions,

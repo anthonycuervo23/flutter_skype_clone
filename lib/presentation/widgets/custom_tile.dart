@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:skype_clone/utils/variables.dart';
+
+//My imports
+import 'package:skype_clone/data/constants/colors.dart';
 
 class CustomTile extends StatelessWidget {
   const CustomTile(
@@ -44,7 +46,7 @@ class CustomTile extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(
                       width: 1,
-                      color: separatorColor,
+                      color: AppColors.separatorColor,
                     ),
                   ),
                 ),

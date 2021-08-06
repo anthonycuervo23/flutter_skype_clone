@@ -1,11 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+
+//My imports
 import 'package:skype_clone/data/models/user.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/chatscreens/chat_screen.dart';
 import 'package:skype_clone/presentation/widgets/custom_tile.dart';
-import 'package:skype_clone/utils/variables.dart';
+import 'package:skype_clone/data/constants/colors.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -35,8 +37,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
   PreferredSizeWidget searchAppBar(BuildContext context) {
     return NewGradientAppBar(
-      gradient: const LinearGradient(
-          colors: <Color>[gradientColorStart, gradientColorEnd]),
+      gradient: const LinearGradient(colors: <Color>[
+        AppColors.gradientColorStart,
+        AppColors.gradientColorEnd
+      ]),
       leading: IconButton(
         icon: const Icon(
           Icons.arrow_back,
@@ -55,7 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 query = value;
               });
             },
-            cursorColor: blackColor,
+            cursorColor: AppColors.blackColor,
             autofocus: true,
             style: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -128,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             subtitle: Text(
               searchedUser.name!,
-              style: const TextStyle(color: greyColor),
+              style: const TextStyle(color: AppColors.greyColor),
             ),
           );
         });
@@ -137,7 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: AppColors.blackColor,
       appBar: searchAppBar(context),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Message {
-  Message({
+//My imports
+import 'package:skype_clone/data/constants/message_fields.dart';
+
+class MessageModel {
+  MessageModel({
     this.senderId,
     this.receiverId,
     this.type,
@@ -10,7 +13,7 @@ class Message {
   });
 
   //Will be only called when you wish to send an image
-  Message.imageMessage(
+  MessageModel.imageMessage(
       {this.senderId,
       this.receiverId,
       this.message,
@@ -20,28 +23,26 @@ class Message {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> map = <String, dynamic>{};
-    map['senderId'] = senderId;
-    map['receiverId'] = receiverId;
-    map['type'] = type;
-    map['message'] = message;
-    map['timestamp'] = timestamp;
+    map[MessageFields.senderId] = senderId;
+    map[MessageFields.receiverId] = receiverId;
+    map[MessageFields.type] = type;
+    map[MessageFields.message] = message;
+    map[MessageFields.timestamp] = timestamp;
     return map;
   }
 
-  Message fromMap(Map<String, dynamic> map) {
-    final Message _message = Message();
-    _message.senderId = map['senderId'] as String;
-    _message.receiverId = map['receiverID'] as String;
-    _message.type = map['type'] as String;
-    _message.message = map['message'] as String;
-    _message.timestamp = map['timestamp'] as FieldValue;
-    return _message;
+  MessageModel.fromMap(Map<String, dynamic> map) {
+    senderId = map[MessageFields.senderId];
+    receiverId = map[MessageFields.receiverId];
+    type = map[MessageFields.type];
+    message = map[MessageFields.message];
+    timestamp = map[MessageFields.timestamp];
   }
 
   String? senderId;
   String? receiverId;
   String? type;
   String? message;
-  FieldValue? timestamp;
+  Timestamp? timestamp;
   String? photoUrl;
 }

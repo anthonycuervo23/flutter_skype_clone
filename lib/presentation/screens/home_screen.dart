@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+//My imports
 import 'package:skype_clone/presentation/pageviews/chat_list_page.dart';
-import 'package:skype_clone/utils/variables.dart';
+import 'package:skype_clone/data/constants/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: AppColors.blackColor,
       body: PageView(
         children: const <Widget>[
           ChatListPage(),
@@ -57,26 +59,29 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: CupertinoTabBar(
-          backgroundColor: blackColor,
+          backgroundColor: AppColors.blackColor,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.chat,
-                color: _page == 0 ? lightBlueColor : greyColor,
+                color:
+                    _page == 0 ? AppColors.lightBlueColor : AppColors.greyColor,
               ),
               label: 'Chats',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.call,
-                color: _page == 1 ? lightBlueColor : greyColor,
+                color:
+                    _page == 1 ? AppColors.lightBlueColor : AppColors.greyColor,
               ),
               label: 'Calls',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.contact_phone,
-                color: _page == 2 ? lightBlueColor : greyColor,
+                color:
+                    _page == 2 ? AppColors.lightBlueColor : AppColors.greyColor,
               ),
               label: 'Contacts',
             ),

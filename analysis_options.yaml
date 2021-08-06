@@ -41,6 +41,7 @@ analyzer:
     unnecessary_null_comparison: ignore
   exclude:
     - lib/**.g.dart
+    - lib/data/models/**
     - test/**
     - "bin/cache/**"
     # Ignore protoc generated files

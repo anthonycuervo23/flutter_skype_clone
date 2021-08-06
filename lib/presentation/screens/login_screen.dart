@@ -1,10 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shimmer/shimmer.dart';
+
+//My imports
 import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/screens/home_screen.dart';
-import 'package:skype_clone/utils/variables.dart';
+import 'package:skype_clone/data/constants/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: blackColor,
+        backgroundColor: AppColors.blackColor,
         body: Stack(
           children: <Widget>[
             Center(
@@ -42,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget loginButton() {
     return Shimmer.fromColors(
       baseColor: Colors.white,
-      highlightColor: senderColor,
+      highlightColor: AppColors.senderColor,
       child: MaterialButton(
         padding: const EdgeInsets.all(35.0),
         onPressed: () => performLogin(),

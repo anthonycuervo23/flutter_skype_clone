@@ -1,10 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+//My imports
 import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/utils/utilities.dart';
 import 'package:skype_clone/presentation/widgets/appbar.dart';
 import 'package:skype_clone/presentation/widgets/custom_tile.dart';
-import 'package:skype_clone/utils/utilities.dart';
-import 'package:skype_clone/utils/variables.dart';
+import 'package:skype_clone/data/constants/colors.dart';
 
 class ChatListPage extends StatefulWidget {
   const ChatListPage({Key? key}) : super(key: key);
@@ -65,7 +67,7 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: AppColors.blackColor,
       appBar: customAppBar(context),
       floatingActionButton: const NewChatButton(),
       body: ChatListContainer(currentUserId: currentUserId),
@@ -84,7 +86,8 @@ class UserCircle extends StatelessWidget {
       height: 40,
       width: 40,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50.0), color: separatorColor),
+          borderRadius: BorderRadius.circular(50.0),
+          color: AppColors.separatorColor),
       child: Stack(
         children: <Widget>[
           Align(
@@ -93,7 +96,7 @@ class UserCircle extends StatelessWidget {
               text!,
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: lightBlueColor,
+                  color: AppColors.lightBlueColor,
                   fontSize: 13),
             ),
           ),
@@ -105,10 +108,10 @@ class UserCircle extends StatelessWidget {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: blackColor,
+                    color: AppColors.blackColor,
                     width: 2,
                   ),
-                  color: onlineDotColor),
+                  color: AppColors.onlineDotColor),
             ),
           )
         ],
@@ -124,7 +127,7 @@ class NewChatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: fabGradient,
+        gradient: AppColors.fabGradient,
         borderRadius: BorderRadius.circular(50.0),
       ),
       child: const Icon(
@@ -166,7 +169,7 @@ class _ChatListContainerState extends State<ChatListContainer> {
             ),
             subtitle: const Text(
               'Hello',
-              style: TextStyle(color: greyColor, fontSize: 14),
+              style: TextStyle(color: AppColors.greyColor, fontSize: 14),
             ),
             leading: Container(
               constraints: const BoxConstraints(maxHeight: 60, maxWidth: 60),
@@ -185,8 +188,9 @@ class _ChatListContainerState extends State<ChatListContainer> {
                       width: 13,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: onlineDotColor,
-                          border: Border.all(color: blackColor, width: 2.0)),
+                          color: AppColors.onlineDotColor,
+                          border: Border.all(
+                              color: AppColors.blackColor, width: 2.0)),
                     ),
                   ),
                 ],
