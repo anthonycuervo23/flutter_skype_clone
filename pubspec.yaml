@@ -21,6 +21,7 @@ dependencies:
   google_sign_in: ^5.0.7
   permission_handler: ^8.1.4+2
   new_gradient_app_bar: ^0.2.0
+  emoji_picker_flutter: ^1.0.6
   shimmer: ^2.0.0
 
 
