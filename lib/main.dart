@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 //My imports
 import 'package:skype_clone/data/provider/image_upload_provider.dart';
+import 'package:skype_clone/data/provider/user_provider.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
 import 'package:skype_clone/presentation/screens/home_screen.dart';
 import 'package:skype_clone/presentation/screens/login_screen.dart';
@@ -26,8 +27,12 @@ class _MyAppState extends State<MyApp> {
   final FirebaseRepository _repository = FirebaseRepository();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ImageUploadProvider>(
-      create: (_) => ImageUploadProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ImageUploadProvider>(
+            create: (_) => ImageUploadProvider()),
+        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: '/',

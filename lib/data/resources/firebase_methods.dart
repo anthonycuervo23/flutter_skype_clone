@@ -18,12 +18,24 @@ class FirebaseMethods {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static final FirebaseStorage storage = FirebaseStorage.instance;
 
+  static final CollectionReference<Map<String, dynamic>> _userCollection =
+      firestore.collection(AppDBConstants.usersCollection);
+
   UserModel userModel = UserModel();
 
   Future<User> getCurrentUser() async {
     User currentUser;
     currentUser = _auth.currentUser!;
     return currentUser;
+  }
+
+  Future<UserModel> getUserDetails() async {
+    final User currentUser = await getCurrentUser();
+
+    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await _userCollection.doc(currentUser.uid).get();
+
+    return UserModel.fromMap(documentSnapshot.data()!);
   }
 
   Future<UserCredential> signIn() async {

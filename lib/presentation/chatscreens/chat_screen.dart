@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 //My imports
@@ -13,6 +14,8 @@ import 'package:skype_clone/data/enum/view_state.dart';
 import 'package:skype_clone/data/models/user.dart';
 import 'package:skype_clone/data/provider/image_upload_provider.dart';
 import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/utils/call_utilities.dart';
+import 'package:skype_clone/data/utils/permissions.dart';
 import 'package:skype_clone/data/utils/utilities.dart';
 import 'package:skype_clone/presentation/widgets/appbar.dart';
 import 'package:skype_clone/presentation/widgets/cached_image.dart';
@@ -258,7 +261,12 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       );
     } else if (message.photoUrl != null) {
-      return CachedImage(url: message.photoUrl);
+      return CachedImage(
+        message.photoUrl!,
+        height: 250,
+        width: 250,
+        radius: 10,
+      );
     }
     return const Text('Error loading image');
     // return message.type != 'image'
@@ -503,7 +511,11 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text(widget.receiver!.name!),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () async =>
+                await Permissions.cameraAndMicrophonePermissionsGranted()
+                    ? CallUtils().dial(
+                        from: sender!, to: widget.receiver!, context: context)
+                    : null,
             icon: const Icon(Icons.video_call),
           ),
           IconButton(

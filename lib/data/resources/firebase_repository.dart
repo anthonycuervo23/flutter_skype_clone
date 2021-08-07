@@ -25,7 +25,7 @@ class FirebaseRepository {
   Future<List<UserModel>> fetchAllUsers(User currentUser) =>
       _firebaseMethods.fetchAllUsers(currentUser);
 
-  // Future<UserModel> fetchUserDetailsById(String uid) => _firebaseMethods.fetchUserDetailsById(uid);
+  Future<UserModel> getUserDetails() => _firebaseMethods.getUserDetails();
 
   Future<void> addMessageToDb(
           MessageModel message, UserModel sender, UserModel receiver) =>
