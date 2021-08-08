@@ -25,8 +25,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    _authMethods.getCurrentUser().then((User user) {
-      _authMethods.fetchAllUsers(user).then((List<UserModel> list) {
+    _authMethods.getCurrentUser().then((User? user) {
+      _authMethods.fetchAllUsers(user!).then((List<UserModel> list) {
         setState(() {
           userList = list;
         });

@@ -54,8 +54,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    _authMethods.getCurrentUser().then((User user) {
-      _currentUserId = user.uid;
+    _authMethods.getCurrentUser().then((User? user) {
+      _currentUserId = user!.uid;
 
       setState(() {
         sender = UserModel(

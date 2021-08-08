@@ -1,3 +1,4 @@
+import 'package:skype_clone/data/enum/user_state.dart';
 import 'package:skype_clone/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,17 +18,29 @@ class AuthMethods {
 
   UserModel userModel = UserModel();
 
-  Future<User> getCurrentUser() async {
-    User currentUser;
-    currentUser = _auth.currentUser!;
+  Future<User?> getCurrentUser() async {
+    User? currentUser;
+    currentUser = _auth.currentUser;
     return currentUser;
   }
 
+  Future<UserModel> getUserDetailsById(String id) async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await _userCollection.doc(id).get();
+
+      return UserModel.fromMap(documentSnapshot.data()!);
+    } catch (e) {
+      print(e);
+      return UserModel();
+    }
+  }
+
   Future<UserModel> getUserDetails() async {
-    final User currentUser = await getCurrentUser();
+    final User? currentUser = await getCurrentUser();
 
     final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await _userCollection.doc(currentUser.uid).get();
+        await _userCollection.doc(currentUser!.uid).get();
 
     return UserModel.fromMap(documentSnapshot.data()!);
   }
@@ -93,4 +106,17 @@ class AuthMethods {
     }
     return userList;
   }
+
+  Future<void> setUserState(
+      {required String userId, required UserState userState}) async {
+    final int stateNum = Utils.stateToNum(userState);
+
+    await _userCollection.doc(userId).update(<String, dynamic>{
+      'state': stateNum,
+    });
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserStream(
+          {required String uid}) =>
+      _userCollection.doc(uid).snapshots();
 }

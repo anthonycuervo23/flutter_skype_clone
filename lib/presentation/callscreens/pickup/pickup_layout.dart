@@ -20,7 +20,7 @@ class PickupLayout extends StatelessWidget {
 
     return (userProvider != null && userProvider.getUser != null)
         ? StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            stream: callMethods.callStream(uid: userProvider.getUser.uid!),
+            stream: callMethods.callStream(uid: userProvider.getUser!.uid!),
             builder: (BuildContext context,
                 AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                     snapshot) {

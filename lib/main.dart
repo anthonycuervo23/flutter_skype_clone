@@ -41,9 +41,9 @@ class _MyAppState extends State<MyApp> {
           '/search_screen': (_) => const SearchScreen(),
         },
         theme: ThemeData(brightness: Brightness.dark),
-        home: FutureBuilder<User>(
+        home: FutureBuilder<User?>(
             future: _authMethods.getCurrentUser(),
-            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
               if (snapshot.hasData) {
                 return const HomeScreen();
               } else {

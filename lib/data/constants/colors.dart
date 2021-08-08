@@ -6,6 +6,8 @@ class AppColors {
   static const Color greyColor = Color(0xff8f8f8f);
   static const Color userCircleBackground = Color(0xff2b2b33);
   static const Color onlineDotColor = Color(0xff46dc64);
+  static const Color offlineDotColor = Color(0xffff0000);
+  static const Color waitingDotColor = Color(0xffffa500);
   static const Color lightBlueColor = Color(0xff0077d7);
   static const Color separatorColor = Color(0xff272c35);
 
