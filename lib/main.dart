@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 //My imports
 import 'package:skype_clone/data/provider/image_upload_provider.dart';
 import 'package:skype_clone/data/provider/user_provider.dart';
-import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/resources/auth_methods.dart';
 import 'package:skype_clone/presentation/screens/home_screen.dart';
 import 'package:skype_clone/presentation/screens/login_screen.dart';
 import 'package:skype_clone/presentation/screens/search_screen.dart';
@@ -24,7 +24,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -41,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         },
         theme: ThemeData(brightness: Brightness.dark),
         home: FutureBuilder<User>(
-            future: _repository.getCurrentUser(),
+            future: _authMethods.getCurrentUser(),
             builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
               if (snapshot.hasData) {
                 return const HomeScreen();

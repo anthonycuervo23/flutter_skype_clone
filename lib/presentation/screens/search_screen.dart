@@ -4,7 +4,7 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //My imports
 import 'package:skype_clone/data/models/user.dart';
-import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/resources/auth_methods.dart';
 import 'package:skype_clone/presentation/chatscreens/chat_screen.dart';
 import 'package:skype_clone/presentation/widgets/custom_tile.dart';
 import 'package:skype_clone/data/constants/colors.dart';
@@ -17,7 +17,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
 
   List<UserModel> userList = <UserModel>[];
   String query = '';
@@ -25,8 +25,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    _repository.getCurrentUser().then((User user) {
-      _repository.fetchAllUsers(user).then((List<UserModel> list) {
+    _authMethods.getCurrentUser().then((User user) {
+      _authMethods.fetchAllUsers(user).then((List<UserModel> list) {
         setState(() {
           userList = list;
         });

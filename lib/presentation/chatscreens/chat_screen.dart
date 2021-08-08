@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 //My imports
@@ -13,7 +12,9 @@ import 'package:skype_clone/data/constants/data_constants.dart';
 import 'package:skype_clone/data/enum/view_state.dart';
 import 'package:skype_clone/data/models/user.dart';
 import 'package:skype_clone/data/provider/image_upload_provider.dart';
-import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/resources/auth_methods.dart';
+import 'package:skype_clone/data/resources/chat_methods.dart';
+import 'package:skype_clone/data/resources/storage_methods.dart';
 import 'package:skype_clone/data/utils/call_utilities.dart';
 import 'package:skype_clone/data/utils/permissions.dart';
 import 'package:skype_clone/data/utils/utilities.dart';
@@ -37,7 +38,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final ScrollController _listScrollController = ScrollController();
   final FocusNode textFieldFocus = FocusNode();
 
-  final FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
+  final ChatMethods _chatMethods = ChatMethods();
+  final StorageMethods _storageMethods = StorageMethods();
 
   late ImageUploadProvider? _imageUploadProvider;
 
@@ -51,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    _repository.getCurrentUser().then((User user) {
+    _authMethods.getCurrentUser().then((User user) {
       _currentUserId = user.uid;
 
       setState(() {
@@ -493,12 +496,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
     _textFieldController.text = '';
 
-    _repository.addMessageToDb(_message, sender!, widget.receiver!);
+    _chatMethods.addMessageToDb(_message, sender!, widget.receiver!);
   }
 
   Future<void> pickImage({required ImageSource source}) async {
     final File? selectedImage = await Utils.pickImage(source: source);
-    _repository.uploadImage(
+    _storageMethods.uploadImage(
       image: File(selectedImage!.path),
       receiverId: widget.receiver!.uid!,
       senderId: _currentUserId!,

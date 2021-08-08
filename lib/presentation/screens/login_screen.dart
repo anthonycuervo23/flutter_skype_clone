@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shimmer/shimmer.dart';
 
 //My imports
-import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/resources/auth_methods.dart';
 import 'package:skype_clone/presentation/screens/home_screen.dart';
 import 'package:skype_clone/data/constants/colors.dart';
 
@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
 
   bool isLoginPressed = false;
 
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isLoginPressed = true;
     });
-    _repository.signIn().then((UserCredential? user) {
+    _authMethods.signIn().then((UserCredential? user) {
       if (user != null) {
         authenticateUser(user.user!);
       } else {
@@ -74,12 +74,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void authenticateUser(User user) {
-    _repository.authenticateUser(user).then((bool isNewUser) {
+    _authMethods.authenticateUser(user).then((bool isNewUser) {
       setState(() {
         isLoginPressed = false;
       });
       if (isNewUser) {
-        _repository.addDataToDb(user).then((void value) {
+        _authMethods.addDataToDb(user).then((void value) {
           Navigator.pushReplacement<dynamic, dynamic>(context,
               MaterialPageRoute<dynamic>(builder: (_) => const HomeScreen()));
         });

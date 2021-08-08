@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //My imports
-import 'package:skype_clone/data/resources/firebase_repository.dart';
+import 'package:skype_clone/data/resources/auth_methods.dart';
 import 'package:skype_clone/data/utils/utilities.dart';
 import 'package:skype_clone/presentation/widgets/appbar.dart';
 import 'package:skype_clone/presentation/widgets/custom_tile.dart';
@@ -16,7 +16,7 @@ class ChatListPage extends StatefulWidget {
 }
 
 //global
-final FirebaseRepository _repository = FirebaseRepository();
+final AuthMethods _authMethods = AuthMethods();
 
 class _ChatListPageState extends State<ChatListPage> {
   String? currentUserId;
@@ -24,7 +24,7 @@ class _ChatListPageState extends State<ChatListPage> {
 
   @override
   void initState() {
-    _repository.getCurrentUser().then((User user) {
+    _authMethods.getCurrentUser().then((User user) {
       setState(() {
         currentUserId = user.uid;
         initials = Utils.getInitials(user.displayName!);
