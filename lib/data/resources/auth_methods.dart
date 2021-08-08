@@ -87,10 +87,16 @@ class AuthMethods {
         .set(userModel.toMap(userModel));
   }
 
-  Future<void> signOut() async {
-    await _googleSignIn.disconnect();
-    await _googleSignIn.signOut();
-    return _auth.signOut();
+  Future<bool> signOut() async {
+    try {
+      await _googleSignIn.disconnect();
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Future<List<UserModel>> fetchAllUsers(User currentUser) async {
