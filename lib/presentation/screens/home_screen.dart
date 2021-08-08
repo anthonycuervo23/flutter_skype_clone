@@ -10,6 +10,7 @@ import 'package:skype_clone/presentation/callscreens/pickup/pickup_layout.dart';
 //My imports
 import 'package:skype_clone/presentation/pageviews/chat_list_page.dart';
 import 'package:skype_clone/data/constants/colors.dart';
+import 'package:skype_clone/presentation/pageviews/logs_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -103,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         body: PageView(
           children: const <Widget>[
             ChatListPage(),
+            LogPage(),
             Center(
               child: Text(
                 'Call Logs',
